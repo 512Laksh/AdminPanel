@@ -1,0 +1,25 @@
+<select class="filter-select " name="uname">
+                      <option selected disabled>--Choose--</option>
+                        <?php 
+                        foreach($user as $row):?>
+                        <option value="<?= $row['uname'] ?>"><?= $row['uname'] ?></option>
+                        <?php endforeach;?>
+                      </select>
+
+
+
+                      <select class="filter-select " name="email">
+                      <option selected disabled>--Choose--</option>
+                        <?php 
+                        foreach($user as $row):?>
+                        <option value="<?= $row['email'] ?>"><?= $row['email'] ?></option>
+                        <?php endforeach;?>
+                      </select>
+
+                      <?php
+        if(session()->getFlashdata('status')){  
+           echo '<div class="alert alert-success  alert-dismissible fade show" role="alert">'.
+                    session()->getFlashdata('status')
+            .'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+        ?>
