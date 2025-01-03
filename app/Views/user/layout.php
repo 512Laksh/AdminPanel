@@ -6,6 +6,7 @@
     <title>Admin Panel</title>
     <link rel="stylesheet" href="<?= base_url("cdn/bootstrap/bootstrap.css")?>">
     <link rel="stylesheet" href="<?= base_url("assets/css/chat.css")?>">
+    <link rel="stylesheet" href="<?= base_url("assets/css/tail-colors.css")?>">
     <link rel="stylesheet" href="<?= base_url("cdn/select2.css")?>">
     <link rel="stylesheet" href="<?= base_url("cdn/fontawesome.css")?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -99,7 +100,7 @@
 
 <script src="<?= base_url("cdn/popper.js")?>"></script>
 <script src="<?= base_url("cdn/bootstrap/bootstrap.js")?>"></script>
-<script src="<?= base_url("assets/js/chat.js")?>"></script>
+<script src="<?= base_url("assets/javascript/chat.js")?>"></script>
 <script src="<?= base_url("cdn/jquery.js")?>"></script>
 <script src="<?= base_url("cdn/select2.js")?>"></script>
 
