@@ -42,7 +42,19 @@ $routes->post('cfilter', 'CampaignController::filter');
 
 $routes->post('cupdate/(:num)', 'CampaignController::updateUser/$1');
 //
+// $routes->get('mongo/get','LoggerReportController::getMongo');
+// $routes->get('mongo/report','LoggerReportController::getMongoHourly');
 
+// // $routes->get('mysql/get','LoggerReportController::getMysql');
+// $routes->get('mysql/report','LoggerReportController::getMysqlHourly');
+// $routes->get('elastic/report','LoggerReportController::getElasticHourly');
+$routes->get('dwn/(:any)','LoggerReportController::download/$1');
+$routes->get('dwnh/(:any)','LoggerReportController::downloadHourly/$1');
+$routes->get('report/(:any)','LoggerReportController::logger/$1');
+$routes->get('hreport/(:any)','LoggerReportController::hourly/$1');
+
+$routes->get('filter1/(:any)','LoggerReportController::filter/$1');
+// $routes->match(['get', 'post'], 'filter1/(:any)', 'LoggerReportController::filter/$1');
 $routes->get('chat', 'Home::chat');
 
 

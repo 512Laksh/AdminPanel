@@ -16,8 +16,7 @@
          
 
 
-        <button type="button" class="btn btn-primary btn-sm float-start m-1" data-bs-toggle="modal"
-            data-bs-target="#filterModal"><i class="fa fa-filter"></i></button>  
+        <button type="button" class="btn btn-primary btn-sm float-start m-1" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="fa fa-filter"></i></button>  
           <div class="modal fade" id="filterModal" aria-labelledby="exampleModalLabel">
             <div class="modal-dialog modal-sm">
               <div class="modal-content">

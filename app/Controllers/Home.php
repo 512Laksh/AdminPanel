@@ -55,6 +55,7 @@ class Home extends BaseController
     }
 
     public function chat(){
-        return view('user/chat');
+        $data['users']=$this->user->getdata();
+        return view('user/chat/chat.php',$data);
     }
 }

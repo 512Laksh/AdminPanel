@@ -1,8 +1,8 @@
 // start: Sidebar
-document.querySelector('.chat-sidebar-profile-toggle').addEventListener('click', function(e) {
-    e.preventDefault()
-    this.parentElement.classList.toggle('active')
-})
+// document.querySelector('.chat-sidebar-profile-toggle').addEventListener('click', function(e) {
+//     e.preventDefault()
+//     this.parentElement.classList.toggle('active')
+// })
 
 document.addEventListener('click', function(e) {
     if(!e.target.matches('.chat-sidebar-profile, .chat-sidebar-profile *')) {
@@ -42,6 +42,8 @@ document.querySelectorAll('.conversation-form-input').forEach(function(item) {
     })
 })
 
+
+
 document.querySelectorAll('[data-conversation]').forEach(function(item) {
     item.addEventListener('click', function(e) {
         e.preventDefault()
@@ -49,7 +51,12 @@ document.querySelectorAll('[data-conversation]').forEach(function(item) {
             i.classList.remove('active')
         })
         document.querySelector(this.dataset.conversation).classList.add('active')
-    })
+            const socket = io();
+            document.querySelector('.conversation-form').addEventListener('submit',()=>{
+                socket.emit('message',document.querySelector('.conversation-form-input').value)
+                document.querySelector('.conversation-form-input').value='';
+            })
+        })
 })
 
 document.querySelectorAll('.conversation-back').forEach(function(item) {

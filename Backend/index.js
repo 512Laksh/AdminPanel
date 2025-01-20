@@ -6,10 +6,10 @@ const server = http.createServer(app);
 const io = new Server(server, {
     connectionStateRecovery: {}
   });
-const port = 8000;
+const port = 3000;
 
 app.get('/',(req,res)=>{
-    res.sendfile('index.html')
+    res.send('../app/Views/user/chat.php')
 })
 
 io.on('connection', (socket) => {
@@ -25,11 +25,7 @@ io.on('connection', (socket) => {
     });
     
 });
-// io.on('connection', (socket) => {
-//     socket.on('chat message', (msg) => {
-//       console.log('message: ' + msg);
-//     });
-//   });
+
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

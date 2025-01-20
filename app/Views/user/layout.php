@@ -34,21 +34,38 @@
               </li>
             </ul>
         </nav>
-
     </header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light ms-3 me-3 p-0">
         <div class="container-fluid">
           <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
+                <a class="nav-link active" aria-current="page" href="http://localhost:8080/">Dashboard</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Live</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Reports</a>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Reports</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Logger Reports</a>
+                <ul class="dropdown-submenu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="http://localhost:8080/report/1">SQl</a></li>
+                  <li><a class="dropdown-item" href="http://localhost:8080/report/2">Mongo</a></li>
+                  <li><a class="dropdown-item" href="http://localhost:8080/report/3">Elastic</a></li>
+                </ul>
               </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hourly Reports</a>
+                <ul class="dropdown-submenu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="http://localhost:8080/hreport/1">SQl</a></li>
+                  <li><a class="dropdown-item" href="http://localhost:8080/hreport/2">Mongo</a></li>
+                  <li><a class="dropdown-item" href="http://localhost:8080/hreport/3">Elastic</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Conversations</a>
               </li>
@@ -64,7 +81,6 @@
                   <li><a class="dropdown-item" href="#">Acess Level</a></li>
                   <li><a class="dropdown-item" href="<?= base_url("camptable");?>">Campaign</a></li>
                   <li><a class="dropdown-item" href="<?= base_url("chat");?>">Chat</a></li>
-                 
                 </ul>
               </li>
               <li class="nav-item dropdown">
@@ -101,6 +117,7 @@
 <script src="<?= base_url("cdn/popper.js")?>"></script>
 <script src="<?= base_url("cdn/bootstrap/bootstrap.js")?>"></script>
 <script src="<?= base_url("assets/javascript/chat.js")?>"></script>
+<script src="<?= base_url("../../../public/cdn/socket.js")?>"></script>
 <script src="<?= base_url("cdn/jquery.js")?>"></script>
 <script src="<?= base_url("cdn/select2.js")?>"></script>
 

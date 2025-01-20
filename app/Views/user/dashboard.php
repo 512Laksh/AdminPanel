@@ -32,6 +32,6 @@
                 </div>
             </div>
         </section>
-<?= $this->endSection('content');?>
+        
+<?= $this->endSection('content')?>
 
-   

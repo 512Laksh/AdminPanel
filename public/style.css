@@ -86,7 +86,7 @@ footer {
 }
 .nav-item.dropdown:hover .dropdown-menu {
     display: block; 
-    border-radius:1%;
+    /* border-radius:1%; */
 }
 .dropdown-toggle::after {
     display: none; 
@@ -94,6 +94,7 @@ footer {
 .dropdown-item{
  padding:0px 13px;
 }
+
 .cnt{
     background-color: white;
 }

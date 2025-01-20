@@ -32,6 +32,7 @@ class LoginController extends BaseController{
                     'user_id' => $data[0]['id'],
                     'user_name' => $data[0]['uname'],
                     'user_email' => $data[0]['email'],
+                    'acesslevel' => $data[0]['acesslevel'],
                     'logged_in' => true
                 ]);
                 session()->setFlashdata('success', 'Logged in successfully');
