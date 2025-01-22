@@ -8,6 +8,10 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as exel;
 class LoggerReportController extends BaseController{
+    public $pager;
+    public function __construct(){
+        $this->pager=\Config\Services::pager();
+    }
 
     public function download($id){
         ob_start();
@@ -45,34 +49,36 @@ class LoggerReportController extends BaseController{
 
 
     public function filter($id){
+        //getting values from form
         $calltype = $this->request->getVar('calltype');
         $campaign = $this->request->getVar('campaign');
         $process = $this->request->getVar('process');
         $agent = $this->request->getVar('agent');
-        // var_dump($calltype, $campaign, $process, $agent);
-
+        //checking emptieness
         isset($calltype)?$condition['type']=$calltype : null;
         !empty($campaign)?$condition['campaign_name']=$campaign : null;
         !empty($process)?$condition['process_name']=$process : null;
         !empty($agent)?$condition['agent_name']=$agent : null;
-
+        //choosing url
         $ch = curl_init();
         if($id==1){
-            $url = 'http://localhost:5000/a';
+            $url = 'http://localhost:5000/mysql/filter';
         }else if($id==2){
-            $url = 'http://localhost:5001/filter';
+            $url = 'http://localhost:5001/mongo/filter';
         }else{
-            $url = 'http://localhost:5002/filter';
+            $url = 'http://localhost:5002/elastic/filter';
         }
+        //curl post req setup
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($condition));
-    
+        //response from api
         $response = json_decode(curl_exec($ch),true);
         curl_close($ch);
-        $pager = \Config\Services::pager();
+        //pagination
+        // $pager = \Config\Services::pager();
         $page = $this->request->getVar('page') ? (int)$this->request->getVar('page') : 1;
         $perPage = 10;
         $total = count($response);
@@ -80,8 +86,7 @@ class LoggerReportController extends BaseController{
         $data['id']=$id;
         $data['pageName'] = 'Logger Report';
         $data['pageData'] = $pagedData;
-        $data['pager'] = $pager->makeLinks($page, $perPage, $total);
-        // print_r($data['pageData']);
+        $data['pager'] = $this->pager->makeLinks($page, $perPage, $total);
         return view('user/logger_report', $data);
     }
 
@@ -135,7 +140,7 @@ class LoggerReportController extends BaseController{
         curl_close($ch);
         // print_r($response);die;
 
-        $pager = \Config\Services::pager();
+        // $pager = \Config\Services::pager();
         $page = $this->request->getVar('page') ? (int)$this->request->getVar('page') : 1;
         $perPage = 10;
         $total = count($response);
@@ -144,7 +149,7 @@ class LoggerReportController extends BaseController{
         $data['id']=$id;
         $data['pageName'] = 'Logger Report';
         $data['pageData'] = $pagedData;
-        $data['pager'] = $pager->makeLinks($page, $perPage, $total);
+        $data['pager'] = $this->pager->makeLinks($page, $perPage, $total);
         // print_r($data['pageData']);
         return view('user/logger_report', $data);
     }

@@ -6,7 +6,7 @@
     <title>Admin Panel</title>
     <link rel="stylesheet" href="<?= base_url("cdn/bootstrap/bootstrap.css")?>">
     <link rel="stylesheet" href="<?= base_url("assets/css/chat.css")?>">
-    <link rel="stylesheet" href="<?= base_url("assets/css/tail-colors.css")?>">
+    <!-- <link rel="stylesheet" href="<?//= base_url("assets/css/tail-colors.css")?>"> -->
     <link rel="stylesheet" href="<?= base_url("cdn/select2.css")?>">
     <link rel="stylesheet" href="<?= base_url("cdn/fontawesome.css")?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -29,7 +29,7 @@
                 <i class="fa-solid fa-user ms-1"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item d-inline min-width-1" href="#">Log Out</a></li>
+                  <li><a class="dropdown-item d-inline min-width-1" href="http://localhost:8080/logout">Log Out</a></li>
                 </ul>
               </li>
             </ul>
@@ -116,10 +116,11 @@
 
 <script src="<?= base_url("cdn/popper.js")?>"></script>
 <script src="<?= base_url("cdn/bootstrap/bootstrap.js")?>"></script>
-<script src="<?= base_url("assets/javascript/chat.js")?>"></script>
-<script src="<?= base_url("../../../public/cdn/socket.js")?>"></script>
+<!-- <script src="<?//= base_url("assets/javascript/chat.js")?>"></script> -->
+<!-- <script src="<?//= base_url("../../../public/cdn/socket.js")?>"></script> -->
 <script src="<?= base_url("cdn/jquery.js")?>"></script>
 <script src="<?= base_url("cdn/select2.js")?>"></script>
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
 
 
 <script>

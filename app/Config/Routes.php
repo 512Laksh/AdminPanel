@@ -12,7 +12,7 @@ $routes->get('sign', 'SignupController::index');
 
 $routes->post('signup', 'SignupController::signup');
 $routes->post('login', 'LoginController::login');
-
+$routes->get('logout', 'LoginController::logout');
 // $routes->get('dashboard', 'UserController::index');
 $routes->post('filter', 'Home::Filter');
 
