@@ -12,6 +12,16 @@ const io = new Server(server, {
   },
 });
 
+const Bull = require('bull');
+const myFirstQueue = new Bull('bullExample', { redis: { 
+    port: 6379, 
+    host: '127.0.0.1' 
+} 
+});
+
+
+
+
 const { MongoClient } = require("mongodb");
 
 const mongoUri = "mongodb://127.0.0.1:27017";
@@ -34,13 +44,40 @@ async function connectMongo() {
 connectMongo();
 
 app.use(express.static("../app/Views/user/chat/chat.php"));
+let users = [];
+let unique, userName;
 
 io.on("connection", (socket) => {
-  socket.on("username", (username) => {
-    console.log(username + " connected");
-    // socket.emit('online', username)
-  });
   
+
+  socket.on("username", (username) => {
+    userName=username
+    console.log(username + " connected");
+    users.push(username);
+    unique=[...new Set(users)].sort();
+    socket.emit('loggedIn', unique)
+    console.log(unique)
+
+    // socket.on('disconnect', ()=>{
+    //   var index = unique.sort().indexOf(username);
+    //   if (index !== -1) {
+    //     unique.splice(index, 1);
+    //   }
+    // })
+  });
+
+
+  socket.on('disconnect', () => {
+    console.log(userName + " disconnected");
+    const index = unique.indexOf(userName);
+      unique.splice(index, 1);
+      unique = [...new Set(users)].sort();
+      console.log(unique)
+      socket.emit('loggedIn', unique);
+
+  })
+
+
   socket.on("joinRoom", async ({ sender, receiver }) => {
     const room = [sender, receiver].sort().join("&");
     console.log(`${sender} joined room ${room}`);
@@ -57,7 +94,6 @@ io.on("connection", (socket) => {
         })
         .sort({ timestamp: 1 })
         .toArray();
-      // console.log(messages);
       socket.emit("previousMessages", messages);
     } catch (err) {
       console.error("Error fetching messages:", err);
@@ -74,14 +110,16 @@ io.on("connection", (socket) => {
         message,
         timestamp: new Date(),
       };
+      
+      myFirstQueue.add(chat)
 
-      await db.collection("messages").insertOne(chat);
-      // console.log(chat);
+      // await db.collection("messages").insertOne(chat);
       io.to(room).emit("new-message", chat);
     } catch (err) {
       console.error("Failed to save/send message:", err);
     }
   });
+
 });
 
 const PORT = 3000;

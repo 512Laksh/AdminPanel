@@ -1,11 +1,4 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Application</title>
 
-    <style> -->
 <?= $this->extend('user/layout.php'); ?>
 <?= $this->section('content'); ?>
 <link rel="stylesheet" href="<?= base_url("assets/css/chat.css") ?>">
@@ -30,7 +23,7 @@
                                             alt="sunil"> </div>
                                     <div class="chat_ib">
                                         <h5><?= $user['uname'] ?><span class="chat_date">Dec 25</span></h5>
-                                        <!-- <p>Test, which is a new approach to have all solutions </p> -->
+                                        <p id="status" data-username="<?= $user['uname'] ?>"></p>
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +33,7 @@
                 </div>
             </div>
             <div class="mesgs">
-                <div class="chatting"><h4 id="receiver">Select a chat</h></div>
+                <div class="chatting"><h4 id="receiver">Select a chat  </h4><p id="ol"></p></div>
                 <div class="msg_history"></div>
 
                 <div class="type_msg hidden">
@@ -51,38 +44,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         <script src=" <?= base_url("cdn/socket.io.js") ?>"></script>
         <script>
@@ -97,33 +58,40 @@
             const currentUserSpan = document.getElementById('current-user');
             const recipientName = document.getElementById('recipient-name');
             const chatMode = document.getElementById('chat-mode');
-            // const messageInput = document.getElementById('message-input');
             const messageInput = document.getElementById('write_msg');
-
-            // const sendBtn = document.getElementById('send-btn');
             const sendBtn = document.getElementById('send-btn');
-
-            // const messagesContainer = document.getElementById('messages');
             const usersList = document.getElementById('users-list');
-            const modeBtns = document.querySelectorAll('.mode-btn');
-            // const userItem = document.querySelectorAll('.user-item')
+            const modeBtns = document.querySelectorAll('.mode-btn')
             const userItem = document.querySelectorAll('.chat_list')
-
+            const status= document.querySelectorAll('#status')
             // State
             let currentUser = null;
             let receiver = null;
-            // let chatType = 'private';
-
 
             let username = "<?= session()->get('user_name') ?>"
-            // currentUserSpan.textContent = "<?//= session()->get('user_name') ?>"
             socket.emit('username', username);
+
+        
+            socket.on('loggedIn', data=>{
+                console.log(data);
+                let rec;
+                status.forEach(p => {
+                    rec = p.dataset.username;
+                    if(data.includes(rec)){
+                        p.textContent="online"
+                    }else{
+                        p.textContent="offline"
+                    }
+                });
+            })
+
+
 
             userItem.forEach(user => {
                 user.addEventListener('click', () => {
                     document.querySelector(".type_msg").classList.remove('hidden')
                     receiver = user.dataset.username;
-                    document.querySelector('#receiver').textContent = receiver;
+                    document.getElementById('receiver').textContent=receiver
                     let chatHistory = document.querySelector('.msg_history')
                     chatHistory.innerHTML = '';
                     socket.emit('joinRoom', {
@@ -147,16 +115,6 @@
             }
 
             socket.on('previousMessages', (messages) => {
-                // const chatHistory = document.getElementById('messages');
-                // chatHistory.innerHTML = '';
-                // messages.forEach(msg => {
-                //     const messageDiv = document.createElement('div');
-                //     messageDiv.className = `message ${msg.sender === username ? 'sender-message' : 'receiver-message'}`;
-                //     messageDiv.textContent = msg.message;
-                //     chatHistory.appendChild(messageDiv);
-                // });
-                // chatHistory.scrollTop = chatHistory.scrollHeight;
-
                 let chatHistory = document.querySelector('.msg_history')
                 messages.forEach(msg => {
                     const date= new Date(msg.timestamp);
@@ -180,21 +138,12 @@
                         `
                         messageDiv.classList.add('incoming_msg')
                     }
-                    // messageDiv.className = `message ${msg.sender === username ? 'sender-message' : 'receiver-message'}`;
-                    // messageDiv.textContent = msg.message;
                     chatHistory.appendChild(messageDiv);
                     chatHistory.scrollTop = chatHistory.scrollHeight;
                 });
             });
 
             socket.on('new-message', (message) => {
-                // const chatHistory = document.getElementById('messages');
-                // const messageDiv = document.createElement('div');
-                // messageDiv.className = `message ${message.sender === username ? 'sender-message' : 'receiver-message'}`;
-                // messageDiv.textContent = message.message;
-                // chatHistory.appendChild(messageDiv);
-                // chatHistory.scrollTop = chatHistory.scrollHeight;
-                // console.log(message)
                 const date= new Date(message.timestamp);
                 let chatHistory = document.querySelector('.msg_history')
                 const messageDiv = document.createElement('div');
@@ -223,6 +172,7 @@
                     chatHistory.scrollTop = chatHistory.scrollHeight;
             });
 
+            
             sendBtn.addEventListener('click', sendMessage);
             messageInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
