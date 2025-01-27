@@ -12,15 +12,13 @@ const io = new Server(server, {
   },
 });
 
-const Bull = require('bull');
-const myFirstQueue = new Bull('bullExample', { redis: { 
-    port: 6379, 
-    host: '127.0.0.1' 
-} 
+const Bull = require("bull");
+const myFirstQueue = new Bull("bullExample", {
+  redis: {
+    port: 6379,
+    host: "127.0.0.1",
+  },
 });
-
-
-
 
 const { MongoClient } = require("mongodb");
 
@@ -44,38 +42,37 @@ async function connectMongo() {
 connectMongo();
 
 app.use(express.static("../app/Views/user/chat/chat.php"));
-let users = [];
-let unique, userName;
+
 
 io.on("connection", (socket) => {
-  
 
-  socket.on("username", (username) => {
-    userName=username
+  let userName;
+  socket.on("username", async(username) => {
+    userName = username;
     console.log(username + " connected");
-    users.push(username);
-    unique=[...new Set(users)].sort();
-    socket.emit('loggedIn', unique)
-    console.log(unique)
+    await db.collection("users").updateOne(
+      {name : username},
+      {$set :{status : "online"}},
+      {upsert : true}
+    )
+    let user=await db.collection("users").find().toArray()
+    io.emit("loggedIn",user)
+  });
 
-    // socket.on('disconnect', ()=>{
-    //   var index = unique.sort().indexOf(username);
-    //   if (index !== -1) {
-    //     unique.splice(index, 1);
-    //   }
-    // })
+  socket.on("disconnect", async() => {
+    console.log(userName + " disconnected");
+      await db.collection("users").updateOne(
+      {name : userName},
+      {$set :{status : "offline"}},
+      {upsert : true}
+    )
+    let user=await db.collection("users").find().toArray()
+    io.emit("loggedIn",user)
   });
 
 
-  socket.on('disconnect', () => {
-    console.log(userName + " disconnected");
-    const index = unique.indexOf(userName);
-      unique.splice(index, 1);
-      unique = [...new Set(users)].sort();
-      console.log(unique)
-      socket.emit('loggedIn', unique);
 
-  })
+
 
 
   socket.on("joinRoom", async ({ sender, receiver }) => {
@@ -110,8 +107,8 @@ io.on("connection", (socket) => {
         message,
         timestamp: new Date(),
       };
-      
-      myFirstQueue.add(chat)
+
+      myFirstQueue.add(chat);
 
       // await db.collection("messages").insertOne(chat);
       io.to(room).emit("new-message", chat);
@@ -120,6 +117,16 @@ io.on("connection", (socket) => {
     }
   });
 
+
+  socket.on('typing', ({ username, sender, receiver }) => {
+    const room = [sender, receiver].sort().join("&");
+    io.to(room).emit("typing", username);
+  });
+
+  socket.on('stop typing', ({ username, sender, receiver }) => {
+    const room = [sender, receiver].sort().join("&");
+    io.to(room).emit("stop typing", username);
+  });
 });
 
 const PORT = 3000;

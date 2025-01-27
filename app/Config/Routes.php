@@ -58,3 +58,7 @@ $routes->get('filter1/(:any)','LoggerReportController::filter/$1');
 $routes->get('chat', 'Home::chat');
 
 
+// $routes->group('',['filter'=>'AuthCheck'],function($routes){
+
+
+// });
